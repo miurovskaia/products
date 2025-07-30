@@ -47,7 +47,11 @@ public class ProductService {
 
         Set<ProductEntityAud> productEntityAudSet = new HashSet<>();
 
-        productEntityAudSet.addAll(productAudRepository.findById(id));
+        ProductEntityAud maxRevEntity = productAudRepository.findFirstByOrderByRevDesc()
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        Integer maxRev = maxRevEntity.getRev();
+
+        productEntityAudSet.addAll(productAudRepository.findByIdAndRevIsNot(id,maxRev ));
 
         return productEntityAudSet;
     }

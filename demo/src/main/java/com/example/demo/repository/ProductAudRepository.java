@@ -12,6 +12,6 @@ import java.util.Set;
 public interface ProductAudRepository extends JpaRepository<ProductEntityAud, String> {
 
     Set<ProductEntityAud> findById(Integer id);
-
-
+    Set<ProductEntityAud> findByIdAndRevIsNot(Integer id, Integer rev);
+    Optional<ProductEntityAud> findFirstByOrderByRevDesc();
 }
