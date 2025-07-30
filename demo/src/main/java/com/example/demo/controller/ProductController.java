@@ -38,11 +38,22 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createProduct(@RequestBody CreateProductDto createProductDto)  throws Exception{
+        String tariffId = createProductDto.getTariffId().toString();
+        System.out.println("tariffId= "+tariffId);
+        System.out.println("tariffids from tariff service"+KafkaReceiver.tariffIds.toString());
+        boolean resultOfCompare =false;
+        for (String tarId: KafkaReceiver.tariffIds) {
+            if (tariffId.equals(tarId)) {
+                resultOfCompare = true;
+            }
+        }
+        if(!resultOfCompare )
+        {
+            throw new RuntimeException("Tariff with this id does not exists!");
+        }
         ProductEntity entity = productMapper.createProductDtoToProductEntity(createProductDto);
         Integer productId = productService.createProduct(entity);
-       KafkaReceiver.listen();
-        logger.info("create");
-        System.out.println("trrr");
+
         return ResponseEntity.ok(productId);
     }
 

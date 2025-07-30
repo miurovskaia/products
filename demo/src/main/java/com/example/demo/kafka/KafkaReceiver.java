@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,25 +22,30 @@ public class KafkaReceiver
   private final static String GROUP_ID = "KafkaStudyConsumer";
   private final static String BOOTSTRAP_SERVERS = "broker:29092";
 
+  public static HashSet<String> tariffIds = new HashSet<String>();
   private static final Logger logger = LoggerFactory.getLogger("KafkaReceiver");
 
   public static void listen() {
       Consumer<String, String> consumer = createConsumer(TOPIC);
       try {
-          final ConsumerRecords<String, String> records = consumer.poll(1000);
-          System.out.println("pollll made");
-          if (!records.isEmpty()) {
-              records.forEach(record -> {
+          while(true) {
+              final ConsumerRecords<String, String> records = consumer.poll(1000);
+              // System.out.println("poll made");
+              if (!records.isEmpty()) {
+                  records.forEach(record -> {
 
-                  logger.info("receive record(key={} value={} )",
-                          record.key(), record.value());
-                  System.out.println("received record"+record.key()+record.value());
-              });
-
-              consumer.commitAsync();
-          }
-          else{
-              System.out.println("recordsisempty");
+                     // logger.info("receive record(key={} value={} )",
+                     //        record.key(), record.value());
+                     if (record.value().equals("created"))
+                     {
+                         tariffIds.add(record.key());
+                     }
+                     else if( record.value().equals("deleted")) {
+                         tariffIds.remove(record.key());
+                     }
+                  });
+                  consumer.commitAsync();
+              }
           }
       } catch (Exception e) {
           e.printStackTrace();

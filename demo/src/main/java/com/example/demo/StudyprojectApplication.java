@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.kafka.KafkaReceiver;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -33,6 +34,7 @@ public class StudyprojectApplication {
         public static void main(String[] args) {
             SpringApplication.run(StudyprojectApplication.class, args);
             TimeZone.setDefault(TimeZone.getTimeZone("Europe/Moscow"));
+            KafkaReceiver.listen();
         }
 
 
