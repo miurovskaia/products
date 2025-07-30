@@ -5,9 +5,13 @@ import com.example.demo.dto.ProductAudDto;
 import com.example.demo.dto.ProductDto;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.ProductEntityAud;
+//import com.example.demo.kafka.KafkaReceiver;
+import com.example.demo.kafka.KafkaReceiver;
 import com.example.demo.mapper.ProductMapper;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private static final Logger logger = LoggerFactory.getLogger("ProductController");
 
     ProductController( ProductService productService1, ProductMapper productMapper1)
     {
@@ -35,6 +40,9 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody CreateProductDto createProductDto)  throws Exception{
         ProductEntity entity = productMapper.createProductDtoToProductEntity(createProductDto);
         Integer productId = productService.createProduct(entity);
+       KafkaReceiver.listen();
+        logger.info("create");
+        System.out.println("trrr");
         return ResponseEntity.ok(productId);
     }
 
