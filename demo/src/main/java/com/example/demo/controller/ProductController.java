@@ -1,14 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CreateProductDto;
+import com.example.demo.dto.ProductAudDto;
 import com.example.demo.dto.ProductDto;
 import com.example.demo.entity.ProductEntity;
+import com.example.demo.entity.ProductEntityAud;
 import com.example.demo.mapper.ProductMapper;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @RestController
@@ -37,6 +42,19 @@ public class ProductController {
     public ResponseEntity<?>  getProductByProductId(@PathVariable Integer productId) {
         ProductDto productDto  = productMapper.productEntityToProductDto(productService.getProduct(productId));
         return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/peviousVersions/{productId}")
+    public ResponseEntity<?>  getPreviousProductVersionsByProductId(@PathVariable Integer productId) {
+
+
+        Set<ProductEntityAud> productAudEntitySet = productService.getPreviousProductVersionsByProductId(productId);
+        Set<ProductAudDto> productDtoSet = new HashSet<>();
+        for(ProductEntityAud productAud: productAudEntitySet )
+        {
+            productDtoSet.add(productMapper.productEntityAudToProductAudDto(productAud));
+        }
+        return new ResponseEntity(productDtoSet, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.CreateProductDto;
 import com.example.demo.entity.ProductEntity;
+import com.example.demo.entity.ProductEntityAud;
+import com.example.demo.repository.ProductAudRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,11 @@ import java.util.Set;
 //@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductAudRepository productAudRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,ProductAudRepository productAudRepository ) {
         this.productRepository = productRepository;
+        this.productAudRepository = productAudRepository;
     }
 
     public ProductEntity getProduct(Integer id) {
@@ -35,6 +39,17 @@ public class ProductService {
         productEntitySet.addAll(productRepository.findAllByNameIn(searchWordsList));
 
         return productEntitySet;
+    }
+
+
+
+    public Set<ProductEntityAud> getPreviousProductVersionsByProductId(Integer id){
+
+        Set<ProductEntityAud> productEntityAudSet = new HashSet<>();
+
+        productEntityAudSet.addAll(productAudRepository.findById(id));
+
+        return productEntityAudSet;
     }
 
     public Integer createProduct(ProductEntity productEntity) {
