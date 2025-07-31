@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 //?
-public interface ProductRepository extends JpaRepository<ProductEntity, String> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
         Optional<ProductEntity> findById(Integer id);
         Set<ProductEntity> findAllByNameIn(List<String> searchWords);

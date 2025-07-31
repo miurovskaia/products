@@ -30,18 +30,18 @@ public class ProductEntity {
         @Column(name = "version")
         @Audited
         private int version;
-
-        private Instant timeAndDate;
+        @Column(name = "time_and_date")
+        private Instant timedate;
 
 
         public ProductEntity() {
         }
 
-        public ProductEntity(Integer id, String name,String conditions, Integer tariffId, Instant timeAndDate) {
+        public ProductEntity(Integer id, String name,String conditions, Integer tariffId, Instant timedate) {
                 this.id = id;
                 this.name = name;
                 this.tariffId = tariffId;
-                this.timeAndDate = timeAndDate;
+                this.timedate = timedate;
 
         }
 
@@ -77,10 +77,10 @@ public class ProductEntity {
                 this.tariffId = tariffId;
         }
 
-        public void setTimeAndDate(Instant timeAndDate) {
-                this.timeAndDate = timeAndDate;
+        public void setTimedate(Instant timedate) {
+                this.timedate = timedate;
         }
-        public Instant getTimeAndDate() {
-                return timeAndDate;
+        public Instant getTimedate() {
+                return timedate;
         }
 }

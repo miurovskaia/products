@@ -7,6 +7,7 @@ import com.example.demo.repository.ProductAudRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -60,17 +61,23 @@ public class ProductService {
         return (productRepository.save(productEntity)).getId();
     }
 
-    public void changeProduct(CreateProductDto createProductDto, String id) {
+    public void changeProduct(CreateProductDto createProductDto, Integer id) {
         ProductEntity productEntity = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         productEntity.setName(createProductDto.getName());
         productEntity.setTariffId(createProductDto.getTariffId());
-        productEntity.setTimeAndDate(createProductDto.getTimeAndDate());
+        productEntity.setTimedate(createProductDto.getTimedate());
         productRepository.save(productEntity);
     }
 
-    public void deleteProduct(String id) {
+    public void deleteProduct(Integer id) {
         productRepository.deleteById(id);
     }
-
+    public Set<ProductEntityAud> getVersionsForPeriodByProductId(Integer productId, Instant startTimedate, Instant endTimedate) {
+        Set<ProductEntityAud> productEntityAudSet = new HashSet<>();
+        productEntityAudSet.addAll(productAudRepository.findAllByIdAndTimedateBetween(productId,startTimedate, endTimedate ));
+        System.out.println("lalala"+productEntityAudSet.toString());
+        System.out.println("dates:"+ startTimedate+endTimedate);
+        return productEntityAudSet;
+    }
 
 }

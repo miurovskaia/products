@@ -26,19 +26,19 @@ public class ProductEntityAud {
     private Integer tariffId;
     private Integer version;
     @Column(name = "time_and_date")
-    private Instant timeAndDate;
+    private Instant timedate;
 
     public ProductEntityAud() {
     }
 
-    public ProductEntityAud(Integer id, Integer rev, Integer revtype, String name, Integer tariffId, int version, Instant timeAndDate) {
+    public ProductEntityAud(Integer id, Integer rev, Integer revtype, String name, Integer tariffId, int version, Instant timedate) {
         this.id = id;
         this.rev = rev;
         this.revtype = revtype;
         this.name = name;
         this.tariffId = tariffId;
         this.version = version;
-        this.timeAndDate = timeAndDate;
+        this.timedate = timedate;
     }
 
 
@@ -90,10 +90,10 @@ public class ProductEntityAud {
     }
 
 
-    public void setTimeAndDate(Instant timeAndDate) {
-        this.timeAndDate = timeAndDate;
+    public void setTimedate(Instant timedate) {
+        this.timedate = timedate;
     }
-    public Instant getTimeAndDate() {
-        return timeAndDate;
+    public Instant getTimedate() {
+        return timedate;
     }
 }

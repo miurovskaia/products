@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,8 +66,6 @@ public class ProductController {
 
     @GetMapping("/peviousVersions/{productId}")
     public ResponseEntity<?>  getPreviousProductVersionsByProductId(@PathVariable Integer productId) {
-
-
         Set<ProductEntityAud> productAudEntitySet = productService.getPreviousProductVersionsByProductId(productId);
         Set<ProductAudDto> productDtoSet = new HashSet<>();
         for(ProductEntityAud productAud: productAudEntitySet )
@@ -76,17 +75,29 @@ public class ProductController {
         return new ResponseEntity(productDtoSet, HttpStatus.OK);
     }
 
+    @GetMapping("/versionsForPeriod/{productId}")
+    public ResponseEntity<?>  getVersionsForPeriodByProductId(@RequestParam Instant startTimeDate,@RequestParam Instant endTimeDate, @PathVariable Integer productId) {
+        Set<ProductEntityAud> productAudEntitySet = productService.getVersionsForPeriodByProductId(productId, startTimeDate, endTimeDate);
+        Set<ProductAudDto> productDtoSet = new HashSet<>();
+        for(ProductEntityAud productAud: productAudEntitySet )
+        {
+            productDtoSet.add(productMapper.productEntityAudToProductAudDto(productAud));
+        }
+        return new ResponseEntity(productDtoSet, HttpStatus.OK);
+    }
+
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(
             @RequestBody CreateProductDto createProductDto,
-            @PathVariable String id
+            @PathVariable Integer id
     ) {
-        productService.changeProduct(createProductDto, id);
+        productService.changeProduct(createProductDto,  id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") Integer id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok().build();
     }

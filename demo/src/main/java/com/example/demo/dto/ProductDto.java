@@ -15,7 +15,7 @@ public class ProductDto {
     private Integer id;
     private String name;
     private Integer tariffId;
-    private Instant timeAndDate;
+    private Instant timedate;
 
     public Integer getId() {
         return id;
@@ -34,12 +34,12 @@ public class ProductDto {
     public void setName(String name) {
         this.name = name;
     }
-    public Instant getTimeAndDate() {
-        return timeAndDate;
+    public Instant getTimedate() {
+        return timedate;
     }
 
-    public void setTimeAndDate(Instant timeAndDate) {
-        this.timeAndDate = timeAndDate;
+    public void setTimedate(Instant timedate) {
+        this.timedate = timedate;
     }
 
     public Integer getTariffId() {
@@ -56,7 +56,7 @@ public class ProductDto {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tariffId='" + tariffId + '\'' +
-                ", timeAndDate='" + timeAndDate + '\'' +
+                ", timedate='" + timedate + '\'' +
                 '}';
     }
 }
