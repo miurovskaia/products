@@ -75,9 +75,31 @@ public class ProductService {
     public Set<ProductEntityAud> getVersionsForPeriodByProductId(Integer productId, Instant startTimedate, Instant endTimedate) {
         Set<ProductEntityAud> productEntityAudSet = new HashSet<>();
         productEntityAudSet.addAll(productAudRepository.findAllByIdAndTimedateBetween(productId,startTimedate, endTimedate ));
-        System.out.println("lalala"+productEntityAudSet.toString());
-        System.out.println("dates:"+ startTimedate+endTimedate);
         return productEntityAudSet;
+    }
+
+    public void revertToPreviousVersion(Integer id) {
+        ProductEntity product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        ProductEntityAud prevProductEntityAud = productAudRepository.findSecondLatestBy(id)
+                .orElseThrow(() -> new RuntimeException("ProductAud not found"));
+
+        product.setName(prevProductEntityAud.getName());
+        product.setTariffId(prevProductEntityAud.getTariffId());
+        product.setTimedate(prevProductEntityAud.getTimedate());
+        productRepository.save(product);
+
+/*
+         Integer currentVersion = product.getVersion();
+        if (currentVersion>0) {
+            product.setVersion(currentVersion - 1);
+        }
+        else {
+            throw new RuntimeException("it is min version");
+        }
+
+ */
+        productRepository.save(product);
     }
 
 }

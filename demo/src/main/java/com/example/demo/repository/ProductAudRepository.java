@@ -16,10 +16,8 @@ public interface ProductAudRepository extends JpaRepository<ProductEntityAud, In
 
     Set<ProductEntityAud> findAllById(Integer id);
     Set<ProductEntityAud> findByIdAndRevIsNot(Integer id, Integer rev);
-   Optional<ProductEntityAud> findFirstByOrderByRevDesc();
-   // Set<ProductEntityAud> findAllByTimedateBetween(Integer id, Instant startTimedate, Instant endTimedate);
-   /* @Query("select p from ProductEntityAud p where p.timedate <= :endDateTime")
-    Optional<ProductEntityAud> findviatimedateperiod(
-            @Param("endDateTime") Instant endDateTime);*/
-   Set<ProductEntityAud> findAllByIdAndTimedateBetween(Integer id, Instant startTimedate, Instant endTimedate);
+    Optional<ProductEntityAud> findFirstByOrderByRevDesc();
+    Set<ProductEntityAud> findAllByIdAndTimedateBetween(Integer id, Instant startTimedate, Instant endTimedate);
+    @Query(value = "SELECT * FROM product_aud WHERE id = :id ORDER BY rev DESC LIMIT 1 OFFSET 1", nativeQuery = true)
+    Optional<ProductEntityAud> findSecondLatestBy(@Param("id") Integer id);
 }

@@ -86,6 +86,12 @@ public class ProductController {
         return new ResponseEntity(productDtoSet, HttpStatus.OK);
     }
 
+    @GetMapping("/revertToPreviousVersion/{productId}")
+    public ResponseEntity<?>  revertToPreviousVersion( @PathVariable Integer productId) {
+        productService.revertToPreviousVersion(productId);
+        return ResponseEntity.ok().build();
+    }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(
